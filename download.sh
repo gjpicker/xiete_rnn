@@ -45,9 +45,10 @@ pip install  -r req.txt
 ###########
 
 echo "==== train  with CNN "
-python run_cnn.py 
-echo "finish train ,just epoch 2 "
-echo "=== evalute with CNN by pretrained model"
 
-
+echo "=============="
+echo "=============="
+echo "pls, run with this 'python run_cnn.py'  "
+echo "=============="
+echo "=============="
 echo "finish .."
