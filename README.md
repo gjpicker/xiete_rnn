@@ -11,7 +11,7 @@ easy train and evaluate framework by pytorch
 * start python train+val 
    
    `  python run_cnn.py`
-     
+  or    
    ` python  run_cnn.py  --epochs 1`
 
 
