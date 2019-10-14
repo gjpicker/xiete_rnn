@@ -101,52 +101,15 @@ def run(train_batch_size, val_batch_size, epochs, lr, momentum, log_interval):
     pbar.close()
 
 
-def run_only_evaluate(train_batch_size, val_batch_size, epochs, lr, momentum, log_interval):
-    train_loader, val_loader = get_data_loaders(train_batch_size, val_batch_size)
-    model = Net()
-    device = 'cpu'
-
-    if torch.cuda.is_available():
-        device = 'cuda'
-
-    optimizer = SGD(model.parameters(), lr=lr, momentum=momentum)
-    trainer = create_supervised_trainer(model, optimizer, F.nll_loss, device=device)
-    evaluator = create_supervised_evaluator(model,
-                                            metrics={'accuracy': Accuracy(),
-                                                     'nll': Loss(F.nll_loss)},
-                                            device=device)
-
-    desc = "ITERATION - loss: {:.2f}"
-    pbar = tqdm(
-        initial=0, leave=False, total=len(train_loader),
-        desc=desc.format(0)
-    )
-
-    @trainer.on(Events.EPOCH_COMPLETED)
-    def log_validation_results(engine):
-        evaluator.run(val_loader)
-        metrics = evaluator.state.metrics
-        avg_accuracy = metrics['accuracy']
-        avg_nll = metrics['nll']
-        tqdm.write(
-            "Validation Results - Epoch: {}  Avg accuracy: {:.2f} Avg loss: {:.2f}"
-            .format(engine.state.epoch, avg_accuracy, avg_nll))
-
-        pbar.n = pbar.last_print_n = 0
-
-    #trainer.run(train_loader, max_epochs=epochs)
-    evaluator.run(val_loader, max_epochs=epochs)
-    pbar.close()
-
 
 if __name__ == "__main__":
     parser = ArgumentParser()
-    parser.add_argument('--batch_size', type=int, default=64,
-                        help='input batch size for training (default: 64)')
+    parser.add_argument('--batch_size', type=int, default=128,
+                        help='input batch size for training (default: 128)')
     parser.add_argument('--val_batch_size', type=int, default=1000,
                         help='input batch size for validation (default: 1000)')
-    parser.add_argument('--epochs', type=int, default=10,
-                        help='number of epochs to train (default: 10)')
+    parser.add_argument('--epochs', type=int, default=3,
+                        help='number of epochs to train (default: 3')
     parser.add_argument('--lr', type=float, default=0.01,
                         help='learning rate (default: 0.01)')
     parser.add_argument('--momentum', type=float, default=0.5,
@@ -157,25 +120,3 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     run(args.batch_size, args.val_batch_size, args.epochs, args.lr, args.momentum, args.log_interval)
-if __name__ == "__main__":
-    parser = ArgumentParser()
-    parser.add_argument('--batch_size', type=int, default=64,
-                        help='input batch size for training (default: 64)')
-    parser.add_argument('--val_batch_size', type=int, default=1000,
-                        help='input batch size for validation (default: 1000)')
-    parser.add_argument('--epochs', type=int, default=10,
-                        help='number of epochs to train (default: 10)')
-    parser.add_argument('--lr', type=float, default=0.01,
-                        help='learning rate (default: 0.01)')
-    parser.add_argument('--momentum', type=float, default=0.5,
-                        help='SGD momentum (default: 0.5)')
-    parser.add_argument('--log_interval', type=int, default=10,
-                        help='how many batches to wait before logging training status')
-
-    args = parser.parse_args()
-
-
-
-    #run(args.batch_size, args.val_batch_size, args.epochs, args.lr, args.momentum, args.log_interval)
-    run_only_evaluate(args.batch_size, args.val_batch_size, args.epochs, args.lr, args.momentum, args.log_interval)
-

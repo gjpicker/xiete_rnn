@@ -8,8 +8,10 @@ easy train and evaluate framework by pytorch
 ## how to run 
 * install env 
 ` sh download.sh`
-* start python 
-`  python run_cnn.py`
+* start python train+val 
+   `  python run_cnn.py`
+    or  
+   ` python  run_cnn.py  --epochs 1`
 
 
 ## ref
