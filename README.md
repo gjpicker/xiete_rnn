@@ -9,12 +9,13 @@ easy train and evaluate framework by pytorch
 * install env 
 ` sh download.sh`
 * start python train+val 
+   
    `  python run_cnn.py`
-    or  
+     
    ` python  run_cnn.py  --epochs 1`
 
 
 ## ref
-[ignite](https://github.com/pytorch/ignite)
-[pytorch-nlp](https://github.com/PetrochukM/PyTorch-NLP)
-[text](https://github.com/pytorch/text.git)
+* [ignite](https://github.com/pytorch/ignite)
+* [pytorch-nlp](https://github.com/PetrochukM/PyTorch-NLP)
+* [text](https://github.com/pytorch/text.git)
